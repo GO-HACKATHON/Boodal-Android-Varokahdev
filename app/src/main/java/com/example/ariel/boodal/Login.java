@@ -18,8 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.ariel.boodal.Object.UserObject;
 import com.example.ariel.boodal.helper.AppController;
-import com.example.ariel.boodal.helper.SQLiteHandler;
 import com.example.ariel.boodal.helper.SessionManager;
+import com.example.ariel.boodal.helper.SQLiteHandler;
 
 
 import org.json.JSONArray;
@@ -106,37 +106,59 @@ public class Login extends AppCompatActivity {
 
         pDialog.setMessage("Logging in ...");
         showDialog();
-        JsonObjectRequest strReq = new JsonObjectRequest (Request.Method.POST,urlJsonObj,null, new Response.Listener<JSONObject>() {
+
+        JSONObject jsonObject1=new JSONObject();
+
+        try {
+            jsonObject1.put("email",email);
+            jsonObject1.put("password",password);
+            jsonObject1.put("phone","081330331301");
+            jsonObject1.put("name","dicky");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest strReq = new JsonObjectRequest (Request.Method.POST,urlJsonObj,jsonObject1, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("error :", "Login Response: " + response.toString());
                 hideDialog();
                 try {
                     int error = response.getInt("status_code");
-                    JSONArray setdata = new JSONArray();
+                    JSONObject data = new JSONObject();
                     // Check for error node in json
                     if (error == 200) {
-                        // user successfully logged in
-                        // Create login session
-                        session.setLogin(true);
-                        // Now store the user in SQLite
-                        setdata = response.getJSONArray("data");
-                        for (int i = 0; i < setdata.length(); i++) {
-                            JSONObject data = setdata.getJSONObject(i);
-                            String id = data.getString("id");
-                            String name =data.getString("name");
-                            String email = data.getString("email");
-                            String phone = data.getString("phone");
-                            int status = data.getInt("status");
-                            double lat = data.getDouble("lat");
-                            double lng = data.getDouble("lng");
-                            String api_token = data.getString("api_token");
-                            db.addUser(id,name, email,phone,status,lat,lng,api_token);
+                        String id = null;
+                        String name = null;
+                        String email = null;
+                        String phone = null;
+                        int status = 0;
+                        double lat = 0;
+                        double lng = 0;
+                        String api_token = null;
+                        data = response.getJSONObject("data");
+                        for (int i = 0; i < data.length(); i++) {
+                            id = data.getString("id");
+                            name =data.getString("name");
+                            email = data.getString("email");
+                            phone = data.getString("phone");
+                            status = data.getInt("status");
+                            lat = data.getDouble("lat");
+                            lng = data.getDouble("lng");
+                            api_token = data.getString("api_token");
+
                         }
-                        // Launch main activity
-                        Intent intent = new Intent(Login.this,User_Drawer.class);
-                        startActivity(intent);
-                        finish();
+                        session.setLogin(true);
+                        db.addUser(id,name, email,phone,status,lat,lng,api_token);
+                        if (status == 1) {
+                            // Launch main activity
+                            Intent intent = new Intent(Login.this, User_Drawer.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            Intent intent = new Intent(Login.this, Driver_Home.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = "Email dan Password salah";
@@ -166,17 +188,18 @@ public class Login extends AppCompatActivity {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("email", email);
-                params.put("pass", password);
+                params.put("password", password);
+                params.put("phone", "081330331301");
+                params.put("name", "dicky");
                 return params;
             }
 
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                params.put("Accept","application/x-www-form-urlencoded");
+                params.put("Content-Type","application/json");
+                params.put("Accept","application/json");
                 return params;
             }
-
         };
 
         // Adding request to request queue

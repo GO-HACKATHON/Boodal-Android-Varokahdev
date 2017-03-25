@@ -30,7 +30,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id_user";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_PHONE = "email";
+    private static final String KEY_PHONE = "phone";
     private static final String KEY_STATUS = "status";
     private static final String LAT = "lat";
     private static final String LNG= "lng";
@@ -43,8 +43,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
-                + KEY_ID + " INTEGER," + KEY_NAME + " TEXT,"+ KEY_EMAIL + " TEXT,"+ KEY_PHONE +" TEXT,"+ KEY_STATUS + " TEXT,"+ LAT + " TEXT,"+ LNG + " TEXT,"+ API_TOKEN + " TEXT,"
-                + KEY_EMAIL + " TEXT UNIQUE "+")";
+                + KEY_ID + " INTEGER," + KEY_NAME + " TEXT,"+ KEY_EMAIL + " TEXT,"+ KEY_PHONE +" TEXT,"+ KEY_STATUS + " TEXT,"+ LAT + " TEXT,"+ LNG + " TEXT,"+ API_TOKEN + " TEXT)";
         db.execSQL(CREATE_LOGIN_TABLE);
 
         Log.d(TAG, "Database tables created");

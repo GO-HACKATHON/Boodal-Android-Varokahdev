@@ -17,11 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.content.Intent;
 
 import com.example.ariel.boodal.Object.HomeObject;
 import com.example.ariel.boodal.adapter.HomeAdapter;
+import com.example.ariel.boodal.helper.SQLiteHandler;
+import com.example.ariel.boodal.helper.SessionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User_Drawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,6 +34,8 @@ public class User_Drawer extends AppCompatActivity
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     HomeAdapter adapter ;
+    private SQLiteHandler db;
+    private SessionManager session;
     private ArrayList<HomeObject> allItems = new ArrayList<HomeObject>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,22 @@ public class User_Drawer extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        db = new SQLiteHandler(getApplicationContext());
+
+        // session manager
+        session = new SessionManager(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
+
+        // Fetching user details from sqlite
+        HashMap<String, String> user = db.getUserDetails();
+
+        String name = user.get("name");
+        String email = user.get("email");
+        String id = user.get("id_user");
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -49,6 +72,11 @@ public class User_Drawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.username);
+        nav_user.setText(name);
+        TextView nav_email = (TextView)hView.findViewById(R.id.useremail);
+        nav_user.setText(email);
 
         initViews();
     }
@@ -111,11 +139,21 @@ public class User_Drawer extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            logoutUser();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void logoutUser() {
+        session.setLogin(false);
+
+        db.deleteUsers();
+
+        // Launching the login activity
+        Intent intent = new Intent(User_Drawer.this, Login.class);
+        startActivity(intent);
+        finish();
     }
 }

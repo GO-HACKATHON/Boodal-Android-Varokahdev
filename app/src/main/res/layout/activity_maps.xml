@@ -8,7 +8,7 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/cardview"
@@ -22,7 +22,6 @@
 
         <Button
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/inputuserpass"
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
