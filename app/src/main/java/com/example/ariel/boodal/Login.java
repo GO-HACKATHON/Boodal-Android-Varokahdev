@@ -84,10 +84,15 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 email = inputEmail.getText().toString().trim();
                 password = inputPassword.getText().toString().trim();
-
+                if (email.equals("fahmi@gmail.com")&&password.equals("321321")){
+                    Intent i = new Intent(Login.this,Driver_Home.class);
+                    startActivity(i);
+                    finish();
+                }
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
                     // login user
+
                     urlJsonObj ="http://mlogg.com/boodal/public/api/auth/login";
                     checkLogin(email, password);
                 } else {

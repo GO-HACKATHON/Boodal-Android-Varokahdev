@@ -111,6 +111,7 @@
                     android:inputType="textPassword"
                     android:hint="Password"
                     android:textSize="18dp"
+                    android:id="@+id/textpassuser"
                     />
         </LinearLayout>
         <LinearLayout
@@ -129,6 +130,7 @@
                 android:layout_marginRight="10dp"
                 />
                 <EditText
+                    android:id="@+id/confirmpass"
                     android:background="@android:color/transparent"
                     android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"

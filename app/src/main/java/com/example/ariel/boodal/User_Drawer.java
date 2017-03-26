@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.content.Intent;
 
+
 import com.example.ariel.boodal.Object.HomeObject;
 import com.example.ariel.boodal.adapter.HomeAdapter;
 import com.example.ariel.boodal.helper.SQLiteHandler;
@@ -75,8 +76,6 @@ public class User_Drawer extends AppCompatActivity
         View hView =  navigationView.getHeaderView(0);
         TextView nav_user = (TextView)hView.findViewById(R.id.username);
         nav_user.setText(name);
-        TextView nav_email = (TextView)hView.findViewById(R.id.useremail);
-        nav_user.setText(email);
 
         initViews();
     }

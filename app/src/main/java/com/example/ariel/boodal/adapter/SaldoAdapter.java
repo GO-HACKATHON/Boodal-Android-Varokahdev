@@ -39,7 +39,6 @@ public class SaldoAdapter extends RecyclerView.Adapter<SaldoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tv_jenis.setText(data.get(position).getJenis());
-        holder.tv_tgl.setText(data.get(position).getTgl());
         holder.tv_jumlah.setText(data.get(position).getJumlah());
     }
 

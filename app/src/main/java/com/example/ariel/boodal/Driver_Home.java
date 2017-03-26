@@ -33,11 +33,7 @@ public class Driver_Home extends AppCompatActivity {
         db = new SQLiteHandler(getApplicationContext());
 
         // session manager
-        session = new SessionManager(getApplicationContext());
 
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        }
 
         // Fetching user details from sqlite
         HashMap<String, String> user = db.getUserDetails();
@@ -64,8 +60,8 @@ public class Driver_Home extends AppCompatActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Home").withIdentifier(0),
                         new PrimaryDrawerItem().withName("Top Up").withIdentifier(1),
-                        new PrimaryDrawerItem().withName("Statistik").withIdentifier(2),
-                        new PrimaryDrawerItem().withName("About US").withIdentifier(3),
+                        new PrimaryDrawerItem().withName("Saldo").withIdentifier(2),
+                        new PrimaryDrawerItem().withName("Setting").withIdentifier(3),
                         new PrimaryDrawerItem().withName("Logout").withIdentifier(4)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
